@@ -7,9 +7,6 @@ const getDirsAndFiles = require("./src/utils/getDirsAndFiles.js");
 const imagesPath = './images';
 const imagesPathResult = './assets';
 
-let images = []; /// array to hold images.
-let imageCount = 0; // number of loaded images;
-
 const width = 142;
 const height = 175;
 
@@ -36,14 +33,14 @@ function getRandomImage(imageLayers){
     return randomImage.reverse()
 }
 
-function saveImage(name){
+function saveImage(name, imgs){
 
     const canvas = createCanvas(width, height);
     const context = canvas.getContext("2d");
 
    
-    for (let i = 0; i < images.length; i++) {
-        context.drawImage(images[i], 0, 0); 
+    for (let i = 0; i < imgs.length; i++) {
+        context.drawImage(imgs[i], 0, 0); 
     }
 
     const bufferOriginal = canvas.toBuffer("image/png"); 
@@ -63,10 +60,9 @@ function saveImage(name){
     context.globalCompositeOperation = "source-over";
     context.drawImage(canvas, width, height);
 
-    for (let i = 0; i < images.length; i++) {
-        context.drawImage(images[i], 0, 0); 
+    for (let i = 0; i < imgs.length; i++) {
+        context.drawImage(imgs[i], 0, 0); 
     }
-
 
     const buffer = canvas.toBuffer("image/png");
     fs.writeFileSync(imagesPathResult + "/" + name + "_stroke_asset.png", buffer);
@@ -76,7 +72,7 @@ function saveImage(name){
     const contextResize = canvasResize.getContext("2d");
 
     contextResize.imageSmoothingEnabled = false;
-    
+
     contextResize.drawImage(canvas, 0, 0, targetWidth, targetHeight); 
     
     const resizedbuffer = canvasResize.toBuffer("image/png");
@@ -86,6 +82,9 @@ function saveImage(name){
 
 
 function generate(name){
+    
+    let images = []
+    let imageCount = 0
 
     const randomNFT = getRandomImage(imageLayers)
 
@@ -96,7 +95,7 @@ function generate(name){
             images.push(image); 
             imageCount += 1;
             if(imageCount === randomNFT.length){ 
-                saveImage(name); 
+                saveImage(name, images); 
             }
         }
         image.onerror = err => { throw err }
@@ -105,7 +104,5 @@ function generate(name){
 }
 
 for (let i = 0; i < 3; i++) {
-    images = []
-    imageCount = 0
     generate(i)
 }
