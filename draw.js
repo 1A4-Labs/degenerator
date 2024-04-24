@@ -75,8 +75,8 @@ function saveImage(name){
     const canvasResize = createCanvas(targetWidth, targetHeight);
     const contextResize = canvasResize.getContext("2d");
 
-
-
+    contextResize.imageSmoothingEnabled = false;
+    
     contextResize.drawImage(canvas, 0, 0, targetWidth, targetHeight); 
     
     const resizedbuffer = canvasResize.toBuffer("image/png");
