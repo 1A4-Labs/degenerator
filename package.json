@@ -9,10 +9,6 @@
   "author": "0xAvtandil",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.11.2",
-    "cors": "^2.8.5"
-  },
-  "devDependencies": {
-    "http-proxy-middleware": "^2.0.3"
+    "canvas": "^2.11.2"
   }
 }
